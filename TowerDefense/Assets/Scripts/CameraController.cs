@@ -31,4 +31,10 @@ public class CameraController : MonoBehaviour
         }
         transform.LookAt(Vector3.zero);
     }
+
+    Vector3 CalcNewRotPosition(Vector3 center, Vector3 position)
+    {
+
+        return Vector3.zero;
+    }
 }
