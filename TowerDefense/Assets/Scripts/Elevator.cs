@@ -8,11 +8,40 @@ public class Elevator : MonoBehaviour
 
     public Vector3 bottomPosition;
     public Vector3 topPosition;
+    public bool isMovingUp;
 
     private float lastTimeSwitch;
+    private float endpointTime; 
 
     void Update()
     {
-        transform.position = Vector3.MoveTowards(transform.position, topPosition, speed * Time.deltaTime);
+        if (isMovingUp)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, topPosition, speed * Time.deltaTime);
+            if (transform.position == topPosition)
+            {
+                if (endpointTime == 0)
+                    endpointTime = Time.time;
+                if(Time.time > endpointTime + 2)
+                {
+                    isMovingUp = false;
+                    endpointTime = 0; 
+                }
+            }
+        }
+        else
+        {
+            transform.position = Vector3.MoveTowards(transform.position, bottomPosition, speed * Time.deltaTime);
+            if (transform.position == bottomPosition)
+            {
+                if (endpointTime == 0)
+                    endpointTime = Time.time;
+                if (Time.time > endpointTime + 2)
+                {
+                    isMovingUp = true;
+                    endpointTime = 0;
+                }
+            }
+        }
     }
 }
