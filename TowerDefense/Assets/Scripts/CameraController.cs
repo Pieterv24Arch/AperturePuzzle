@@ -5,32 +5,39 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-	// Use this for initialization
-	void Start ()
-	{
-        
-	}
+    public Vector3 target = Vector3.zero;
 	
 	// Update is called once per frame
 	void Update ()
-    {
+	{
         if (Input.GetKey(KeyCode.W))
-	    {
-	        
-	    }
+        {
+            if(Vector3.Angle(new Vector3(transform.position.x, 0, transform.position.z), transform.position) < 85)
+                transform.RotateAround(target, transform.right, 1);
+        }
         if (Input.GetKey(KeyCode.S))
         {
-
+            if(transform.position.y > 1)
+                transform.RotateAround(target, transform.right, -1);
         }
         if (Input.GetKey(KeyCode.A))
 	    {
-	        transform.Rotate(new Vector3(0,1,0), 1, Space.World);
-	    }
+            transform.RotateAround(target, Vector3.up, 1);
+        }
         if (Input.GetKey(KeyCode.D))
         {
-            transform.Rotate(new Vector3(0, 1, 0), -1, Space.World);
+            transform.RotateAround(target, Vector3.up, -1);
         }
-        //transform.LookAt(Vector3.zero);
+	    if (Input.GetKey(KeyCode.Q))
+	    {
+            if(Physics.Raycast(transform.position, transform.forward))
+	        transform.Translate(transform.forward * 0.1F, Space.World);
+	    }
+	    if (Input.GetKey(KeyCode.E))
+	    {
+            transform.Translate(-transform.forward * 0.1F, Space.World);
+        }
+        transform.LookAt(target);
     }
 
     Vector3 CalcNewRotPosition(Vector3 center, Vector3 position)
