@@ -30,6 +30,9 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!agent.enabled)
+            return;
+
         if(agent.remainingDistance < 0.1f && isMoving)
         {
             isMoving = false;
@@ -82,5 +85,11 @@ public class PlayerController : MonoBehaviour
             item.GetComponent<Rigidbody>().isKinematic = true;
             animator.SetBool("isHolding", true);
         }
+    }
+
+    public void KillPlayer(int type = 0)
+    {
+        agent.enabled = false;
+        animator.CrossFade(type == 0 ? "die" : "crush", 0.1f);
     }
 }

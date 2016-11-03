@@ -13,6 +13,9 @@ public class GameManager : MonoBehaviour
 
     public LayerMask selectionBlockLayerMask;
 
+    public float playerHealth = 100;
+    public bool isAlive = true;
+
     void Awake()
     {
         instance = this;
@@ -38,19 +41,40 @@ public class GameManager : MonoBehaviour
             SelectionCube.gameObject.SetActive(false);
 
         if(Input.GetKeyDown(KeyCode.R) && !isResseting)
-        {
-            isResseting = true;
             StartCoroutine(ResetLevel());
-        }
     }
 
     bool isResseting = false;
     IEnumerator ResetLevel()
     {
+        isResseting = true;
         AsyncOperation async = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
         async.allowSceneActivation = false;
         UIManager.instance.SetWhiteScreen(true, 0.5f);
         yield return new WaitForSeconds(0.5f);
         async.allowSceneActivation = true;
+    }
+
+    public void GetHit()
+    {
+        if (isAlive && playerHealth > 0)
+        {
+            playerHealth -= 10;
+            UIManager.instance.GetHit();
+        }
+        else if(isAlive)
+        {
+            playerHealth = 0;
+            isAlive = false;
+            playerController.KillPlayer();
+            StartCoroutine(KillPlayer());
+        }
+    }
+
+    IEnumerator KillPlayer()
+    {
+        isResseting = true;
+        yield return new WaitForSeconds(2f);
+        StartCoroutine(ResetLevel());
     }
 }
