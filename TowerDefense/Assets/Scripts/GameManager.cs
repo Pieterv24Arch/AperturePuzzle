@@ -1,14 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager instance;
+
     public Transform SelectionCube;
     public Camera SceneCamera;
     public PlayerController playerController;
 
     public LayerMask selectionBlockLayerMask;
+
+    void Awake()
+    {
+        instance = this;
+    }
 
     void Update()
     {
@@ -28,5 +36,21 @@ public class GameManager : MonoBehaviour
         }
         else if (SelectionCube.gameObject.activeSelf)
             SelectionCube.gameObject.SetActive(false);
+
+        if(Input.GetKeyDown(KeyCode.R) && !isResseting)
+        {
+            isResseting = true;
+            StartCoroutine(ResetLevel());
+        }
+    }
+
+    bool isResseting = false;
+    IEnumerator ResetLevel()
+    {
+        AsyncOperation async = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
+        async.allowSceneActivation = false;
+        UIManager.instance.SetWhiteScreen(true, 0.5f);
+        yield return new WaitForSeconds(0.5f);
+        async.allowSceneActivation = true;
     }
 }

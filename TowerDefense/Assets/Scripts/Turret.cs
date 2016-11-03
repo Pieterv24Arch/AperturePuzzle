@@ -9,6 +9,7 @@ public class Turret : MonoBehaviour
     public Transform laserStartPoint;
     public Transform laserObject;
     public List<ParticleSystem> muzzles = new List<ParticleSystem>();
+    public GameObject destructionParticle;
 
     public bool shouldFire = false;
     public float fireForce = 25;
@@ -58,5 +59,14 @@ public class Turret : MonoBehaviour
         lastFiredMuzzle = (lastFiredMuzzle + 1) % 4;
         lastFiredTime = Time.time;
         muzzles[lastFiredMuzzle].Play();
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.relativeVelocity.magnitude > 5)
+        {
+            Instantiate(destructionParticle, transform.position + (Vector3.up * 0.5f), Quaternion.identity);
+            Destroy(gameObject);
+        }
     }
 }

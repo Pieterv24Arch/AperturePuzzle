@@ -1,25 +1,28 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    public List<Menu> allMenus = new List<Menu>();
+    public static UIManager instance;
+    public Image whiteScreen;
 
-    void Update()
+    void Awake()
     {
-
+        instance = this;
     }
 
-    void OpenMenu(string target)
+    IEnumerator Start()
     {
-
+        whiteScreen.enabled = true;
+        whiteScreen.CrossFadeAlpha(1, 0, true);
+        yield return new WaitForSeconds(0.5f);
+        whiteScreen.CrossFadeAlpha(0, 1, true);
     }
 
-    [System.Serializable]
-    public class Menu
+    public void SetWhiteScreen(bool active, float fadeSpeed = 1f)
     {
-        public string name = "";
-        public GameObject gameObject;
+        whiteScreen.CrossFadeAlpha(active ? 1 : 0, fadeSpeed, true);
     }
 }

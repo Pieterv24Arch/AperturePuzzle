@@ -8,6 +8,9 @@ public class PlayerController : MonoBehaviour
     private NavMeshAgent agent;
     public Animator animator;
 
+    public Transform leftArm;
+    public Transform rightArm;
+
     private bool isMoving = false;
     private Item currentItem;
     private Transform itemTargetParent;
@@ -38,7 +41,7 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("isWalking", isMoving);
         }
     }
-
+    
     void Update()
     {
         if (ignoreInputFrame)
@@ -47,13 +50,24 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if(Input.GetKeyDown(KeyCode.F) && currentItem != null)
-        {
-            currentItem.transform.SetParent(null);
-            currentItem.transform.position = transform.position + new Vector3(0,0.5f,0);
-            currentItem.GetComponent<Rigidbody>().isKinematic = false;
-            currentItem = null;
-        }
+        if (currentItem != null)
+            if (Input.GetKeyDown(KeyCode.E))
+                DropItem(false);
+            else if (Input.GetKeyDown(KeyCode.G))
+                DropItem(true);
+
+    }
+
+    void DropItem(bool throwItem)
+    {
+        currentItem.transform.SetParent(null, true);
+        currentItem.GetComponent<Rigidbody>().isKinematic = false;
+        animator.SetBool("isHolding", false);
+
+        if (throwItem && currentItem.thisRigidbody)
+            currentItem.thisRigidbody.AddForce(transform.forward * 5, ForceMode.Impulse);
+        currentItem.enabled = true;
+        currentItem = null;
     }
 
     public void PickUpItem(Item item)
@@ -63,9 +77,10 @@ public class PlayerController : MonoBehaviour
             ignoreInputFrame = true;
             currentItem = item;
             item.transform.parent = itemTargetParent;
-            item.transform.localPosition = new Vector3(0, 0.22f, 0);
-            item.transform.localRotation = Quaternion.identity;
+            item.transform.localPosition = item.localPositionWhenPicked;
+            item.transform.localEulerAngles = item.localRotationWhenPicked;
             item.GetComponent<Rigidbody>().isKinematic = true;
+            animator.SetBool("isHolding", true);
         }
     }
 }
