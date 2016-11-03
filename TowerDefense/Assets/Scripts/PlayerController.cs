@@ -9,10 +9,15 @@ public class PlayerController : MonoBehaviour
     public Animator animator;
 
     private bool isMoving = false;
+    private Item currentItem;
+    private Transform itemTargetParent;
+
+    private bool ignoreInputFrame;
 
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        itemTargetParent = transform.Find("RotationFix/ActorMesh");
     }
 
     public void MoveTo(Vector3 position)
@@ -31,6 +36,36 @@ public class PlayerController : MonoBehaviour
         {
             isMoving = true;
             animator.SetBool("isWalking", isMoving);
+        }
+    }
+
+    void Update()
+    {
+        if (ignoreInputFrame)
+        {
+            ignoreInputFrame = false;
+            return;
+        }
+
+        if(Input.GetKeyDown(KeyCode.F) && currentItem != null)
+        {
+            currentItem.transform.SetParent(null);
+            currentItem.transform.position = transform.position + new Vector3(0,0.5f,0);
+            currentItem.GetComponent<Rigidbody>().isKinematic = false;
+            currentItem = null;
+        }
+    }
+
+    public void PickUpItem(Item item)
+    {
+        if (currentItem == null)
+        {
+            ignoreInputFrame = true;
+            currentItem = item;
+            item.transform.parent = itemTargetParent;
+            item.transform.localPosition = new Vector3(0, 0.22f, 0);
+            item.transform.localRotation = Quaternion.identity;
+            item.GetComponent<Rigidbody>().isKinematic = true;
         }
     }
 }

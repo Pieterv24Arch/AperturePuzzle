@@ -8,10 +8,12 @@ public class GameManager : MonoBehaviour
     public Camera SceneCamera;
     public PlayerController playerController;
 
+    public LayerMask selectionBlockLayerMask;
+
     void Update()
     {
         RaycastHit hit;
-        if (Physics.Raycast(SceneCamera.ScreenPointToRay(Input.mousePosition), out hit, 50))
+        if (Physics.Raycast(SceneCamera.ScreenPointToRay(Input.mousePosition), out hit, 50, selectionBlockLayerMask))
         {
             if (!SelectionCube.gameObject.activeSelf)
                 SelectionCube.gameObject.SetActive(true);
