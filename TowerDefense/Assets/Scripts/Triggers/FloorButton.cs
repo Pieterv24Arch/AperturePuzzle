@@ -5,7 +5,7 @@ using UnityEngine;
 public class FloorButton : Trigger
 {
     public Transform button;
-    public GameObject TriggerReceiver;
+    public GameObject[] triggerReceivers;
 
     private bool isActivated = true;
 
@@ -13,7 +13,7 @@ public class FloorButton : Trigger
     {
         CheckChange();
     }
-    
+
     public override void OnTriggerEnter(Collider col)
     {
         base.OnTriggerEnter(col);
@@ -28,19 +28,23 @@ public class FloorButton : Trigger
 
     void CheckChange()
     {
-        if(isActivated && allColliders.Count == 0)
+        if (isActivated && allColliders.Count == 0)
         {
             StopAllCoroutines();
-            StartCoroutine(LerpButton(new Vector3(0,0.01f,0)));
+            StartCoroutine(LerpButton(new Vector3(0, 0.01f, 0)));
             isActivated = false;
-            TriggerReceiver.SendMessage("SetTriggerState", false);
+
+            foreach (GameObject obj in triggerReceivers)
+                obj.SendMessage("SetTriggerState", false, SendMessageOptions.DontRequireReceiver);
         }
         else if (!isActivated && allColliders.Count != 0)
         {
             StopAllCoroutines();
             StartCoroutine(LerpButton(new Vector3(0, -0.03f, 0)));
             isActivated = true;
-            TriggerReceiver.SendMessage("SetTriggerState", true);
+
+            foreach (GameObject obj in triggerReceivers)
+                obj.SendMessage("SetTriggerState", true, SendMessageOptions.DontRequireReceiver);
         }
     }
 
@@ -48,7 +52,7 @@ public class FloorButton : Trigger
     {
         float endTime = Time.time + 1;
 
-        while(Time.time <= endTime)
+        while (Time.time <= endTime)
         {
             yield return new WaitForFixedUpdate();
             button.localPosition = Vector3.Lerp(button.localPosition, to, Time.fixedDeltaTime * 10);
