@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour
         if (!levelHasEnded && !isResseting)
         {
             levelHasEnded = true;
-            StartCoroutine(SetLevel((SceneManager.GetActiveScene().buildIndex + 1) % SceneManager.sceneCount));
+            StartCoroutine(SetLevel((SceneManager.GetActiveScene().buildIndex + 1) % SceneManager.sceneCountInBuildSettings));
         }
     }
 }
