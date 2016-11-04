@@ -5,6 +5,7 @@ public class CameraController : MonoBehaviour
     public float distance = 8;
     public Vector3 angle = new Vector3(30, -135, 0);
     public Transform targetObject;
+    public bool VisibleWalls;
 
     [Tooltip("Front left from default camera angles perspective")]
     public GameObject frontLeft;
@@ -20,18 +21,29 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
-        wallPairs = new GameObject[4,2] { { frontLeft, frontRight}, { frontLeft, backLeft}, { backLeft, backRight}, { backRight, frontRight} };
-        viewDirs = new Vector3[] {new Vector3(0.5F, 0, 0.5F), new Vector3(0.5F, 0, -0.5F), new Vector3(-0.5F, 0, -0.5F), new Vector3(-0.5F, 0 , 0.5F) };
+        if (VisibleWalls)
+        {
+            wallPairs = new GameObject[4, 2]
+            {{frontLeft, frontRight}, {frontLeft, backLeft}, {backLeft, backRight}, {backRight, frontRight}};
+            viewDirs = new Vector3[]
+            {
+                new Vector3(0.5F, 0, 0.5F), new Vector3(0.5F, 0, -0.5F), new Vector3(-0.5F, 0, -0.5F),
+                new Vector3(-0.5F, 0, 0.5F)
+            };
+        }
     }
 	void Update ()
 	{
 	    angle.y += Input.GetKey(KeyCode.A) ? 1 : Input.GetKey(KeyCode.D) ? -1 : 0;
 	    transform.eulerAngles = angle;
         transform.position = targetObject.position + (transform.rotation * Vector3.back * distance);
-        ResetWalls();
-	    int dir = CheckForWalls();
-        wallPairs[dir, 0].SetActive(false);
-        wallPairs[dir, 1].SetActive(false);
+	    if (VisibleWalls)
+	    {
+	        SetWalls(true);
+	        int dir = CheckForWalls();
+	        wallPairs[dir, 0].SetActive(false);
+	        wallPairs[dir, 1].SetActive(false);
+	    }
 	}
 
     int CheckForWalls()
@@ -50,11 +62,11 @@ public class CameraController : MonoBehaviour
         return bestDotI;
     }
 
-    void ResetWalls()
+    void SetWalls(bool state)
     {
-        frontLeft.SetActive(true);
-        frontRight.SetActive(true);
-        backLeft.SetActive(true);
-        backRight.SetActive(true);
+        frontLeft.SetActive(state);
+        frontRight.SetActive(state);
+        backLeft.SetActive(state);
+        backRight.SetActive(state);
     }
 }
