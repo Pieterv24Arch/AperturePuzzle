@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Elevator : MonoBehaviour
+public class Elevator : Trigger
 {
     public float speed = 1;
 
@@ -69,14 +69,9 @@ public class Elevator : MonoBehaviour
         }
     }
 
-    void Activate()
+    void SetTriggerState(bool state)
     {
-        isMoving = true;
-    }
-
-    void Deactivate()
-    {
-        isMoving = false;
+        isMoving = state;
     }
 
     Vector3 GetDefaultPosition()

@@ -33,14 +33,14 @@ public class FloorButton : Trigger
             StopAllCoroutines();
             StartCoroutine(LerpButton(new Vector3(0,0.01f,0)));
             isActivated = false;
-            TriggerReceiver.SendMessage("Deactivate");
+            TriggerReceiver.SendMessage("SetTriggerState", false);
         }
         else if (!isActivated && allColliders.Count != 0)
         {
             StopAllCoroutines();
             StartCoroutine(LerpButton(new Vector3(0, -0.03f, 0)));
             isActivated = true;
-            TriggerReceiver.SendMessage("Activate");
+            TriggerReceiver.SendMessage("SetTriggerState", true);
         }
     }
 
