@@ -124,7 +124,6 @@ public class Elevator : Trigger
     {
         if (playerOnElevator)
         {
-            Debug.Log("Player found");
             GameManager.instance.playerController.transform.parent = add ? transform : null;
             GameManager.instance.playerController.agent.enabled = !add;
         }
