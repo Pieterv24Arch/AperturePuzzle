@@ -41,11 +41,11 @@ public class GameManager : MonoBehaviour
             SelectionCube.gameObject.SetActive(false);
 
         if(Input.GetKeyDown(KeyCode.R) && !isResseting)
-            StartCoroutine(ResetLevel());
+            StartCoroutine(SetLevel());
     }
 
     bool isResseting = false;
-    IEnumerator ResetLevel()
+    IEnumerator SetLevel(int level = 1)
     {
         isResseting = true;
         AsyncOperation async = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
@@ -75,6 +75,16 @@ public class GameManager : MonoBehaviour
     {
         isResseting = true;
         yield return new WaitForSeconds(2f);
-        StartCoroutine(ResetLevel());
+        StartCoroutine(SetLevel());
+    }
+
+    private bool levelHasEnded = false;
+    public void EndLevel()
+    {
+        if (!levelHasEnded && !isResseting)
+        {
+            levelHasEnded = true;
+            StartCoroutine(SetLevel((SceneManager.GetActiveScene().buildIndex + 1) % SceneManager.sceneCount));
+        }
     }
 }
