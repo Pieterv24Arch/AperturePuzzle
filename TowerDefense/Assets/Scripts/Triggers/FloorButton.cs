@@ -5,6 +5,7 @@ using UnityEngine;
 public class FloorButton : Trigger
 {
     public Transform button;
+    public GameObject TriggerReceiver;
 
     private bool isActivated = true;
 
@@ -32,12 +33,14 @@ public class FloorButton : Trigger
             StopAllCoroutines();
             StartCoroutine(LerpButton(new Vector3(0,0.01f,0)));
             isActivated = false;
+            TriggerReceiver.SendMessage("Deactivate");
         }
         else if (!isActivated && allColliders.Count != 0)
         {
             StopAllCoroutines();
             StartCoroutine(LerpButton(new Vector3(0, -0.03f, 0)));
             isActivated = true;
+            TriggerReceiver.SendMessage("Activate");
         }
     }
 
