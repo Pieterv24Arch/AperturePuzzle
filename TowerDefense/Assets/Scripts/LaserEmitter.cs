@@ -31,7 +31,7 @@ public class LaserEmitter : MonoBehaviour
                         GameManager.instance.GetHit();*/
                     
                 }
-                if (hit.transform.root.GetComponent<LaserRedirectonCube>())
+                if (hit.transform.root.tag == "Redirector")
                 {
                     if (interactionCube == null)
                         interactionCube = hit.transform;
