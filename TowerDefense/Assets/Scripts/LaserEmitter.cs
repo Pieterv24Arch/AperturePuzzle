@@ -11,8 +11,8 @@ public class LaserEmitter : MonoBehaviour
 
     private bool laserUpdated = false;
     private float lastInteractionUpdate = 0;
-    private GameObject interactionCube;
-    private bool laserUpdateSend = false;
+    private Transform interactionCube = null;
+    private bool interactionMessageSend = false;
     
     void FixedUpdate()
     {
@@ -31,24 +31,25 @@ public class LaserEmitter : MonoBehaviour
                         GameManager.instance.GetHit();*/
                     
                 }
-                if (hit.transform.root.tag == "RedirectionCube")
+                if (hit.transform.root.GetComponent<LaserRedirectonCube>())
                 {
-                    Debug.Log("Cube Detected");
                     if (interactionCube == null)
-                        interactionCube = hit.transform.root.gameObject;
-                    if (!laserUpdateSend)
+                        interactionCube = hit.transform;
+                    if (!interactionMessageSend)
                     {
-                        interactionCube.transform.root.SendMessage("SetLaserHitState", true);
-                        laserUpdateSend = true;
+                        interactionCube.SendMessageUpwards("SetLaserHitState", true);
+                        interactionMessageSend = true;
                     }
                 }
-            }
-            if (interactionCube != null && laserUpdateSend)
-            {
-                interactionCube.transform.root.SendMessage("SetLaserHitState", false);
-                interactionCube = null;
-                laserUpdateSend = false;
-
+                else
+                {
+                    if (interactionCube != null)
+                    {
+                        interactionCube.SendMessageUpwards("SetLaserHitState", false);
+                        interactionCube = null;
+                        interactionMessageSend = false;
+                    }
+                }
             }
         }
         else if(!laserUpdated)
