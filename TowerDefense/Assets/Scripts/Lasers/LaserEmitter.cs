@@ -19,8 +19,8 @@ public class LaserEmitter : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(emitterCore.position, Vector3.forward, out hit, 50, collisionLayerMask))
         {
-            laserObject.localPosition = Vector3.forward * (hit.distance * 1.25f / 2) + emitterCore.localPosition;
-            laserObject.localScale = new Vector3(0.01f, 0.01f, hit.distance * 1.25f);
+            laserObject.localPosition = Vector3.forward * (hit.distance/ 2) + emitterCore.localPosition;
+            laserObject.localScale = new Vector3(0.01f, 0.01f, hit.distance);
             laserUpdated = false;
 
             if (interactiveLayerMask == (interactiveLayerMask | 1 << hit.collider.gameObject.layer))
@@ -37,7 +37,7 @@ public class LaserEmitter : MonoBehaviour
                         interactionCube = hit.transform;
                     if (!interactionMessageSend)
                     {
-                        interactionCube.SendMessageUpwards("SetLaserHitState", true);
+                        interactionCube.SendMessageUpwards("SetLaserHitState", true, SendMessageOptions.DontRequireReceiver);
                         interactionMessageSend = true;
                     }
                 }
@@ -45,7 +45,7 @@ public class LaserEmitter : MonoBehaviour
                 {
                     if (interactionCube != null)
                     {
-                        interactionCube.SendMessageUpwards("SetLaserHitState", false);
+                        interactionCube.SendMessageUpwards("SetLaserHitState", false, SendMessageOptions.DontRequireReceiver);
                         interactionCube = null;
                         interactionMessageSend = false;
                     }
