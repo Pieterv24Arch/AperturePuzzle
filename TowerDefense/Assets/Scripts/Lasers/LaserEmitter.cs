@@ -16,25 +16,30 @@ public class LaserEmitter : MonoBehaviour
     
     void FixedUpdate()
     {
-        RaycastHit hit;
-        if (Physics.Raycast(emitterCore.position, Vector3.forward, out hit, 50, collisionLayerMask))
+        RaycastHit hitInfo;
+        if (Physics.Raycast(emitterCore.position, Vector3.forward, out hitInfo, 50, collisionLayerMask))
         {
-            laserObject.localPosition = Vector3.forward * (hit.distance/ 2) + emitterCore.localPosition;
-            laserObject.localScale = new Vector3(0.01f, 0.01f, hit.distance);
+            laserObject.localPosition = Vector3.forward * (hitInfo.distance/ 2) + emitterCore.localPosition;
+            laserObject.localScale = new Vector3(0.01f, 0.01f, hitInfo.distance);
             laserUpdated = false;
 
-            if (interactiveLayerMask == (interactiveLayerMask | 1 << hit.collider.gameObject.layer))
+            if (interactiveLayerMask == (interactiveLayerMask | 1 << hitInfo.collider.gameObject.layer))
             {
                 if (Time.time > lastInteractionUpdate + 0.1F)
                 {
                     /*if (hit.transform.root.tag == "Player")
                         GameManager.instance.GetHit();*/
-                    
+                    if (hitInfo.transform.root.tag == "Turret")
+                    {
+                        Debug.Log("Turret Detected");
+                        hitInfo.transform.root.SendMessage("KillTurret", SendMessageOptions.DontRequireReceiver);
+                    }
+
                 }
-                if (hit.transform.root.tag == "Redirector")
+                if (hitInfo.transform.root.tag == "Redirector")
                 {
                     if (interactionCube == null)
-                        interactionCube = hit.transform;
+                        interactionCube = hitInfo.transform;
                     if (!interactionMessageSend)
                     {
                         interactionCube.SendMessageUpwards("SetLaserHitState", true, SendMessageOptions.DontRequireReceiver);

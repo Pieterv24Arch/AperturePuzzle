@@ -11,7 +11,7 @@ public class LaserRedirectonCube : MonoBehaviour {
     public LayerMask CollisionLayerMask;
     public LayerMask interactiveLayermask;
 
-    public bool receivingLaser;
+    private bool receivingLaser;
     private bool laserUpdated;
     private float lastInteractionUpdate = 0;
     private Transform interactionCube = null;
@@ -34,6 +34,11 @@ public class LaserRedirectonCube : MonoBehaviour {
                     {
                         /*if (hit.transform.root.tag == "Player")
                             GameManager.instance.GetHit();*/
+                        if (hitInfo.transform.root.tag == "Turret")
+                        {
+                            Debug.Log("Turret Detected");
+                            hitInfo.transform.root.SendMessage("KillTurret", SendMessageOptions.DontRequireReceiver);
+                        }
 
                     }
                     if (hitInfo.transform.root.tag == "Redirector")
