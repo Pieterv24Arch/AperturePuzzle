@@ -8,6 +8,7 @@ public class LaserReceiver : MonoBehaviour
 
     void ToggleTrigger(bool state)
     {
+        Debug.Log("Receiver Hit");
         foreach (GameObject obj in receiverObjects)
             obj.SendMessage("SetTriggerState", state, SendMessageOptions.DontRequireReceiver);
     }
