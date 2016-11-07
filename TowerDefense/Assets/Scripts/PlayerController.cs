@@ -13,6 +13,10 @@ public class PlayerController : MonoBehaviour
 
     public Item currentItem;
 
+    public LayerMask groundLayer;
+
+    public bool isFlying;
+
     private bool isMoving = false;
     private Transform itemTargetParent;
 
@@ -60,6 +64,14 @@ public class PlayerController : MonoBehaviour
             else if (Input.GetKeyDown(KeyCode.G))
                 DropItem(true);
 
+        if(isFlying)
+        {
+            if (transform.position.y < 0)
+                GameManager.instance.GetHit();
+
+            if(GetComponent<Rigidbody>().velocity.y <= 0 && Physics.Raycast(transform.position, Vector3.down, 0.05f, groundLayer))
+                SetFlyingMode(false);
+        }
     }
 
     void DropItem(bool throwItem)
@@ -99,5 +111,12 @@ public class PlayerController : MonoBehaviour
     {
         agent.enabled = false;
         animator.CrossFade(type == 0 ? "die" : "crush", 0.1f);
+    }
+
+    public void SetFlyingMode(bool state)
+    {
+        agent.enabled = !state;
+        GetComponent<Rigidbody>().isKinematic = !state;
+        isFlying = state;
     }
 }

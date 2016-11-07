@@ -8,11 +8,13 @@ public class Trigger : MonoBehaviour
 
     public virtual void OnTriggerEnter(Collider col)
     {
-        allColliders.Add(col.attachedRigidbody);
+        if (!allColliders.Contains(col.attachedRigidbody))
+            allColliders.Add(col.attachedRigidbody);
     }
 
     public virtual void OnTriggerExit(Collider col)
     {
-        allColliders.Remove(col.attachedRigidbody);
+        if (allColliders.Contains(col.attachedRigidbody))
+            allColliders.Remove(col.attachedRigidbody);
     }
 }
