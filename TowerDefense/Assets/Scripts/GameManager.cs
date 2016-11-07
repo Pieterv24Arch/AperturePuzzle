@@ -41,14 +41,16 @@ public class GameManager : MonoBehaviour
             SelectionCube.gameObject.SetActive(false);
 
         if(Input.GetKeyDown(KeyCode.R) && !isResseting)
-            StartCoroutine(SetLevel());
+            StartCoroutine(SetLevel(SceneManager.GetActiveScene().buildIndex));
+        if (Input.GetKeyDown(KeyCode.Escape) && !isResseting)
+            StartCoroutine(SetLevel(0));
     }
 
     bool isResseting = false;
-    IEnumerator SetLevel(int level = 1)
+    IEnumerator SetLevel(int level = 2)
     {
         isResseting = true;
-        AsyncOperation async = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
+        AsyncOperation async = SceneManager.LoadSceneAsync(SceneManager.GetSceneByBuildIndex(level).name);
         async.allowSceneActivation = false;
         UIManager.instance.SetWhiteScreen(true, 0.5f);
         yield return new WaitForSeconds(0.5f);
