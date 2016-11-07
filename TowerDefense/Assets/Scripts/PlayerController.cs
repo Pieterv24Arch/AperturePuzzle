@@ -67,6 +67,9 @@ public class PlayerController : MonoBehaviour
         currentItem.GetComponent<Rigidbody>().isKinematic = false;
         animator.SetBool("isHolding", false);
 
+        if (currentItem.resetRotationOnDrop)
+            currentItem.transform.rotation = new Quaternion(0, 0, 0, 0);
+
         if (throwItem && currentItem.thisRigidbody)
             currentItem.thisRigidbody.AddForce(transform.forward * 5, ForceMode.Impulse);
         currentItem.enabled = true;
