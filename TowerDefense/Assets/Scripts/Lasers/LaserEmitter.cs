@@ -31,7 +31,6 @@ public class LaserEmitter : MonoBehaviour
                         GameManager.instance.GetHit();*/
                     if (hitInfo.transform.root.tag == "Turret")
                     {
-                        Debug.Log("Turret Detected");
                         hitInfo.transform.root.SendMessage("KillTurret", SendMessageOptions.DontRequireReceiver);
                     }
 
