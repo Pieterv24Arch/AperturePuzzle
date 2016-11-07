@@ -71,4 +71,10 @@ public class Turret : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    void KillTurret()
+    {
+        Instantiate(destructionParticle, transform.position + (Vector3.up * 0.5f), Quaternion.identity);
+        Destroy(gameObject);
+    }
 }

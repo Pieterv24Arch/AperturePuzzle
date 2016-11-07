@@ -5,6 +5,7 @@ using UnityEngine;
 public class Item : MonoBehaviour
 {
     public bool pickable = false;
+    public bool resetRotationOnDrop = false;
     public bool resetWhenOffLevel = true;
     public Vector3 localRotationWhenPicked;
     public Vector3 localPositionWhenPicked;
