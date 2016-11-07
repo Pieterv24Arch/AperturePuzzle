@@ -83,11 +83,11 @@ public class LaserRedirectonCube : MonoBehaviour {
         }
     }
 
-    void OnMouseOver()
-    {
-        if (Input.GetMouseButtonDown(1))
-            transform.Rotate(Vector3.up, 45f);
-    }
+    //void OnMouseOver()
+    //{
+    //    if (Input.GetMouseButtonDown(1))
+    //        transform.Rotate(Vector3.up, 45f);
+    //}
 
     void SetLaserHitState(bool state)
     {

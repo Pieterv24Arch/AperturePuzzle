@@ -9,6 +9,7 @@ public class Item : MonoBehaviour
     public bool resetWhenOffLevel = true;
     public Vector3 localRotationWhenPicked;
     public Vector3 localPositionWhenPicked;
+    public Vector3 positionOffsetWhenPlaced;
 
     public Rigidbody thisRigidbody;
 

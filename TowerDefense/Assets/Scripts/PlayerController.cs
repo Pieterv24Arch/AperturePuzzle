@@ -11,8 +11,9 @@ public class PlayerController : MonoBehaviour
     public Transform leftArm;
     public Transform rightArm;
 
+    public Item currentItem;
+
     private bool isMoving = false;
-    private Item currentItem;
     private Transform itemTargetParent;
 
     private bool ignoreInputFrame;
@@ -71,7 +72,11 @@ public class PlayerController : MonoBehaviour
             currentItem.transform.rotation = new Quaternion(0, 0, 0, 0);
 
         if (throwItem && currentItem.thisRigidbody)
-            currentItem.thisRigidbody.AddForce(transform.forward * 5, ForceMode.Impulse);
+        {
+            Vector3 force = GameManager.instance.currentAccurateMouseRayPoint - transform.position;
+            force.y = 0;
+            currentItem.thisRigidbody.AddForce(force.normalized * 5, ForceMode.Impulse);
+        }
         currentItem.enabled = true;
         currentItem = null;
     }
