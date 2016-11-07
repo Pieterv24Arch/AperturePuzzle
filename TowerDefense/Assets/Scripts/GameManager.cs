@@ -55,18 +55,18 @@ public class GameManager : MonoBehaviour
         async.allowSceneActivation = true;
     }
 
-    public void GetHit()
+    public void GetHit(int hitMagnitude = 10, int typeDeath = 0)
     {
         if (isAlive && playerHealth > 0)
         {
-            playerHealth -= 10;
+            playerHealth -= hitMagnitude;
             UIManager.instance.GetHit();
         }
         else if(isAlive)
         {
             playerHealth = 0;
             isAlive = false;
-            playerController.KillPlayer();
+            playerController.KillPlayer(typeDeath);
             StartCoroutine(KillPlayer());
         }
     }

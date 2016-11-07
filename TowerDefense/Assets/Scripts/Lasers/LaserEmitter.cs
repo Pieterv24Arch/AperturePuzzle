@@ -60,8 +60,8 @@ public class LaserEmitter : MonoBehaviour
         else if(!laserUpdated)
         {
             laserUpdated = true;
-            laserObject.localPosition = Vector3.forward * 2.5f + emitterCore.localPosition;
-            laserObject.localScale = new Vector3(0.01f, 0.01f, 5);
+            laserObject.localPosition = Vector3.forward * 25f + emitterCore.localPosition;
+            laserObject.localScale = new Vector3(0.01f, 0.01f, 50);
         }
     }
 }

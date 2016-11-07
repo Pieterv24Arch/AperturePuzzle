@@ -25,7 +25,7 @@ public class LaserRedirectonCube : MonoBehaviour {
             RaycastHit hitInfo;
             if (Physics.Raycast(LaserOrigin.position, LaserOrigin.forward, out hitInfo, 50, CollisionLayerMask))
             {
-                Laser.transform.localPosition = Vector3.forward * (hitInfo.distance/ 2) + (LaserOrigin.localPosition + new Vector3(0, 0.02F, 0));
+                Laser.transform.localPosition = Vector3.forward * (hitInfo.distance/ 2) + LaserOrigin.localPosition;
                 Laser.transform.localScale = new Vector3(0.01F, 0.01F, hitInfo.distance);
                 laserUpdated = false;
                 if (interactiveLayermask == (interactiveLayermask | 1 << hitInfo.collider.gameObject.layer))
@@ -65,7 +65,7 @@ public class LaserRedirectonCube : MonoBehaviour {
             else if (!laserUpdated)
             {
                 laserUpdated = true;
-                Laser.transform.localPosition = Vector3.forward * 2.5f + (LaserOrigin.localPosition + new Vector3(0, 0.02F, 0));
+                Laser.transform.localPosition = Vector3.forward * 25f + LaserOrigin.localPosition;
                 Laser.transform.localScale = new Vector3(0.01f, 0.01f, 50);
             }
         }
@@ -73,7 +73,7 @@ public class LaserRedirectonCube : MonoBehaviour {
         {
             laserUpdated = false;
             Laser.transform.localScale = new Vector3(0.01F, 0.01F, 0.01F);
-            Laser.transform.localPosition = (LaserOrigin.localPosition + new Vector3(0, 0.02F, 0));
+            Laser.transform.localPosition = LaserOrigin.localPosition;
             if (interactionCube != null)
             {
                 interactionCube.SendMessageUpwards("SetLaserHitState", false);
