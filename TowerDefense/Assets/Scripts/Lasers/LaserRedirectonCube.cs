@@ -66,7 +66,7 @@ public class LaserRedirectonCube : MonoBehaviour {
             {
                 laserUpdated = true;
                 Laser.transform.localPosition = Vector3.forward * 2.5f + (LaserOrigin.localPosition + new Vector3(0, 0.02F, 0));
-                Laser.transform.localScale = new Vector3(0.01f, 0.01f, 5);
+                Laser.transform.localScale = new Vector3(0.01f, 0.01f, 50);
             }
         }
         else
