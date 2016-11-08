@@ -18,6 +18,7 @@ public class FaithPlate : Trigger
     void Awake()
     {
         anchor = transform.Find("anchor");
+        lastFireTime = Time.time;
     }
 
     void FixedUpdate()
