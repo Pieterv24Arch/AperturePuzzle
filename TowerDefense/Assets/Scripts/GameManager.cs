@@ -16,11 +16,18 @@ public class GameManager : MonoBehaviour
     public float playerHealth = 100;
     public bool isAlive = true;
 
+    public Vector3 currentAccurateMouseRayPoint = Vector3.zero;
+
+    private bool isRotatingPlacement;
+    private Vector3 previousTarget = Vector3.zero;
+    private bool targetIsInProximity = false;
+
+    private bool skipInputFrame = false;
+
     void Awake()
     {
         instance = this;
     }
-
     void Update()
     {
         RaycastHit hit;
@@ -29,6 +36,7 @@ public class GameManager : MonoBehaviour
             if (!SelectionCube.gameObject.activeSelf)
                 SelectionCube.gameObject.SetActive(true);
 
+            currentAccurateMouseRayPoint = hit.point;
             Vector3 target = hit.point;
             target.x = Mathf.Round(target.x + 0.5f) - 0.5f;
             target.z = Mathf.Round(target.z + 0.5f) - 0.5f;
@@ -36,21 +44,66 @@ public class GameManager : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Mouse0))
                 playerController.MoveTo(target);
+
+            if (previousTarget != target)
+            {
+                previousTarget = target;
+                Vector3 sub = playerController.transform.position - target;
+                if (Mathf.Abs(sub.x) < 1.5f && Mathf.Abs(sub.z) < 1.5f && playerController.currentItem != null)
+                {
+                    SelectionCube.GetComponent<Renderer>().material.color = Color.white;
+                    targetIsInProximity = true;
+                }
+                else
+                {
+                    SelectionCube.GetComponent<Renderer>().material.color = Color.black;
+                    targetIsInProximity = false;
+                }
+            }
+
+            if (targetIsInProximity && !isRotatingPlacement && Input.GetKeyDown(KeyCode.Mouse1))
+            {
+                Time.timeScale = 0.35f;
+                isRotatingPlacement = true;
+                playerController.currentItem.transform.SetParent(null, true);
+                playerController.currentItem.transform.position = previousTarget + playerController.currentItem.positionOffsetWhenPlaced;
+                skipInputFrame = true;
+            }
+            if (isRotatingPlacement && !skipInputFrame)
+            {
+                Vector3 pos = currentAccurateMouseRayPoint;
+                pos.y = playerController.currentItem.transform.position.y;
+
+                playerController.currentItem.transform.LookAt(pos);
+
+                if(Input.GetKeyDown(KeyCode.Mouse1))
+                {
+                    isRotatingPlacement = false;
+                    Time.timeScale = 1;
+                    
+                    playerController.currentItem.GetComponent<Rigidbody>().isKinematic = false;
+                    playerController.animator.SetBool("isHolding", false);
+                    playerController.currentItem.enabled = true;
+                    playerController.currentItem = null;
+                }
+            }
         }
         else if (SelectionCube.gameObject.activeSelf)
             SelectionCube.gameObject.SetActive(false);
 
-        if(Input.GetKeyDown(KeyCode.R) && !isResseting)
+        if (Input.GetKeyDown(KeyCode.R) && !isResseting)
             StartCoroutine(SetLevel(SceneManager.GetActiveScene().buildIndex));
         if (Input.GetKeyDown(KeyCode.Escape) && !isResseting)
             StartCoroutine(SetLevel(0));
+
+        skipInputFrame = false;
     }
 
     bool isResseting = false;
     IEnumerator SetLevel(int level = 2)
     {
         isResseting = true;
-        AsyncOperation async = SceneManager.LoadSceneAsync(SceneManager.GetSceneByBuildIndex(level).name);
+        AsyncOperation async = SceneManager.LoadSceneAsync(level);
         async.allowSceneActivation = false;
         UIManager.instance.SetWhiteScreen(true, 0.5f);
         yield return new WaitForSeconds(0.5f);
@@ -64,7 +117,11 @@ public class GameManager : MonoBehaviour
             playerHealth -= hitMagnitude;
             UIManager.instance.GetHit();
         }
+<<<<<<< HEAD
         else if(isAlive || hitMagnitude >= 100)
+=======
+        else if (isAlive)
+>>>>>>> origin/master
         {
             playerHealth = 0;
             isAlive = false;
@@ -77,7 +134,7 @@ public class GameManager : MonoBehaviour
     {
         isResseting = true;
         yield return new WaitForSeconds(2f);
-        StartCoroutine(SetLevel());
+        StartCoroutine(SetLevel(SceneManager.GetActiveScene().buildIndex));
     }
 
     private bool levelHasEnded = false;

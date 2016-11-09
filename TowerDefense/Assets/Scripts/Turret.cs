@@ -34,8 +34,8 @@ public class Turret : MonoBehaviour
                     Fire();
                     if (hit.collider.attachedRigidbody)
                         hit.collider.attachedRigidbody.AddForceAtPosition(transform.forward * fireForce, hit.point);
-                    if (hit.transform.root.tag == "Player")
-                        GameManager.instance.GetHit();
+                    if (hit.transform.tag == "Player")
+                        GameManager.instance.GetHit(25);
                 }
             }
         }

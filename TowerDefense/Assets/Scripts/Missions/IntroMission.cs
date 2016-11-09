@@ -25,7 +25,7 @@ public class IntroMission : MonoBehaviour
 
         yield return new WaitForSeconds(5);
 
-        CaptationDisplay.instance.DisplayText(5, "This is you.. offcourse you already know who you are... but anyways");
+        CaptationDisplay.instance.DisplayText(5, "This is you.. ofcourse you already know who you are... but anyways");
         Transform target1 = GameObject.Find("PlayerObject").transform;
 
         startTime = Time.time;
@@ -50,7 +50,7 @@ public class IntroMission : MonoBehaviour
         }
         
 
-        CaptationDisplay.instance.DisplayText(3, "Only then will you be able to 'win' the 60 bucks, Goodluck!");
+        CaptationDisplay.instance.DisplayText(3, "Only then will you be able to 'win' the 60 bucks, good luck!");
         startTime = Time.time;
         while (Time.time < startTime + 5)
         {
