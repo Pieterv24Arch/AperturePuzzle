@@ -117,11 +117,7 @@ public class GameManager : MonoBehaviour
             playerHealth -= hitMagnitude;
             UIManager.instance.GetHit();
         }
-<<<<<<< HEAD
         else if(isAlive || hitMagnitude >= 100)
-=======
-        else if (isAlive)
->>>>>>> origin/master
         {
             playerHealth = 0;
             isAlive = false;
