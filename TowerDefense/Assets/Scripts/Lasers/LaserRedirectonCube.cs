@@ -32,16 +32,16 @@ public class LaserRedirectonCube : MonoBehaviour {
                 {
                     if (Time.time > lastInteractionUpdate + 0.1F)
                     {
-                        /*if (hit.transform.root.tag == "Player")
+                        /*if (hit.transform.tag == "Player")
                             GameManager.instance.GetHit();*/
-                        if (hitInfo.transform.root.tag == "Turret")
+                        if (hitInfo.transform.tag == "Turret")
                         {
                             Debug.Log("Turret Detected");
-                            hitInfo.transform.root.SendMessage("KillTurret", SendMessageOptions.DontRequireReceiver);
+                            hitInfo.transform.SendMessage("KillTurret", SendMessageOptions.DontRequireReceiver);
                         }
 
                     }
-                    if (hitInfo.transform.root.tag == "Redirector")
+                    if (hitInfo.transform.tag == "Redirector")
                     {
                         if (interactionCube == null)
                             interactionCube = hitInfo.transform;
@@ -82,12 +82,6 @@ public class LaserRedirectonCube : MonoBehaviour {
             }
         }
     }
-
-    //void OnMouseOver()
-    //{
-    //    if (Input.GetMouseButtonDown(1))
-    //        transform.Rotate(Vector3.up, 45f);
-    //}
 
     void SetLaserHitState(bool state)
     {

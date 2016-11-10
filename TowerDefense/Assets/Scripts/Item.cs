@@ -37,10 +37,10 @@ public class Item : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
-        if (Input.GetKeyDown(KeyCode.E) && other.transform.root.tag == "Player")
+        if (Input.GetKeyDown(KeyCode.E) && other.transform.tag == "Player")
         {
             if (pickable)
-                other.transform.root.GetComponent<PlayerController>().PickUpItem(this);
+                other.transform.GetComponent<PlayerController>().PickUpItem(this);
 
             enabled = false;
         }

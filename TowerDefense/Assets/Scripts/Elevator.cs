@@ -65,7 +65,7 @@ public class Elevator : Trigger
             bool playerFound = false;
             foreach (Rigidbody col in allColliders)
             {
-                if (col.transform.root.tag == "Player")
+                if (col.transform.tag == "Player")
                 {
                     playerFound = true;
                     if (col.transform.position.y + 0.5f < transform.position.y && !isMovingUp)
@@ -130,7 +130,7 @@ public class Elevator : Trigger
     {
         if (playerOnElevator && (isMoving || !add))
         {
-            GameManager.instance.playerController.transform.parent = add ? transform : null;
+            GameManager.instance.playerController.transform.parent = add ? transform : transform.parent;
             GameManager.instance.playerController.agent.enabled = !add;
         }
     }

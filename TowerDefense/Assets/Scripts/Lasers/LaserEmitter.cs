@@ -27,15 +27,15 @@ public class LaserEmitter : MonoBehaviour
             {
                 if (Time.time > lastInteractionUpdate + 0.1F)
                 {
-                    /*if (hit.transform.root.tag == "Player")
+                    /*if (hit.transform.tag == "Player")
                         GameManager.instance.GetHit();*/
-                    if (hitInfo.transform.root.tag == "Turret")
+                    if (hitInfo.transform.tag == "Turret")
                     {
-                        hitInfo.transform.root.SendMessage("KillTurret", SendMessageOptions.DontRequireReceiver);
+                        hitInfo.transform.SendMessage("KillTurret", SendMessageOptions.DontRequireReceiver);
                     }
 
                 }
-                if (hitInfo.transform.root.tag == "Redirector")
+                if (hitInfo.transform.tag == "Redirector")
                 {
                     if (interactionCube == null)
                         interactionCube = hitInfo.transform;

@@ -76,7 +76,7 @@ public class PlayerController : MonoBehaviour
 
     void DropItem(bool throwItem)
     {
-        currentItem.transform.SetParent(null, true);
+        currentItem.transform.SetParent(transform.parent, true);
         currentItem.GetComponent<Rigidbody>().isKinematic = false;
         animator.SetBool("isHolding", false);
 

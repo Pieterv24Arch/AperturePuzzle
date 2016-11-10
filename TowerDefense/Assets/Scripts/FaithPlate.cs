@@ -39,7 +39,7 @@ public class FaithPlate : Trigger
         hardBuffer = 55;
         foreach (Rigidbody rig in allColliders)
         {
-            if(rig.transform.root.tag == "Player")
+            if(rig.transform.tag == "Player")
             {
                 GameManager.instance.playerController.SetFlyingMode(true);
             }
