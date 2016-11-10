@@ -42,8 +42,8 @@ public class Turret : MonoBehaviour
         else if (!hasLaserBeenUpdated)
         {
             hasLaserBeenUpdated = true;
-            laserObject.localPosition = Vector3.forward * 2.5f + laserStartPoint.localPosition;
-            laserObject.localScale = new Vector3(0.01f, 0.01f, 5);
+            laserObject.localPosition = Vector3.forward * 25 + laserStartPoint.localPosition;
+            laserObject.localScale = new Vector3(0.01f, 0.01f, 50);
             shouldFire = false;
         }
 

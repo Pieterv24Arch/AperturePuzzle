@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
             {
                 previousTarget = target;
                 Vector3 sub = playerController.transform.position - target;
-                if (Mathf.Abs(sub.x) < 1.5f && Mathf.Abs(sub.z) < 1.5f && playerController.currentItem != null)
+                if (Mathf.Abs(sub.x) < 1.5f && Mathf.Abs(sub.z) < 1.5f && playerController.currentItem != null && Mathf.Abs(sub.y) < 0.5F)
                 {
                     SelectionCube.GetComponent<Renderer>().material.color = Color.white;
                     targetIsInProximity = true;
@@ -68,6 +68,7 @@ public class GameManager : MonoBehaviour
                 playerController.currentItem.transform.SetParent(null, true);
                 playerController.currentItem.transform.position = previousTarget + playerController.currentItem.positionOffsetWhenPlaced;
                 skipInputFrame = true;
+                playerController.agent.enabled = false;
             }
             if (isRotatingPlacement && !skipInputFrame)
             {
@@ -85,6 +86,7 @@ public class GameManager : MonoBehaviour
                     playerController.animator.SetBool("isHolding", false);
                     playerController.currentItem.enabled = true;
                     playerController.currentItem = null;
+                    playerController.agent.enabled = true;
                 }
             }
         }
