@@ -53,12 +53,7 @@ public class LaserRedirectonCube : MonoBehaviour {
                     }
                     else
                     {
-                        if (interactionCube != null)
-                        {
-                            interactionCube.SendMessageUpwards("SetLaserHitState", false, SendMessageOptions.DontRequireReceiver);
-                            interactionCube = null;
-                            interactionMessageSend = false;
-                        }
+                        ResetSignal();
                     }
                 }
             }
@@ -67,6 +62,7 @@ public class LaserRedirectonCube : MonoBehaviour {
                 laserUpdated = true;
                 Laser.transform.localPosition = Vector3.forward * 25f + LaserOrigin.localPosition;
                 Laser.transform.localScale = new Vector3(0.01f, 0.01f, 50);
+                ResetSignal();
             }
         }
         else
@@ -74,12 +70,18 @@ public class LaserRedirectonCube : MonoBehaviour {
             laserUpdated = false;
             Laser.transform.localScale = new Vector3(0.01F, 0.01F, 0.01F);
             Laser.transform.localPosition = LaserOrigin.localPosition;
-            if (interactionCube != null)
-            {
-                interactionCube.SendMessageUpwards("SetLaserHitState", false);
-                interactionCube = null;
-                interactionMessageSend = false;
-            }
+            ResetSignal();
+        }
+    }
+
+    void ResetSignal()
+    {
+        if (interactionCube != null)
+        {
+            interactionCube.SendMessageUpwards("SetLaserHitState", false,
+                            SendMessageOptions.DontRequireReceiver);
+            interactionCube = null;
+            interactionMessageSend = false;
         }
     }
 
