@@ -70,10 +70,15 @@ public class PlayerController : MonoBehaviour
         {
             if (transform.position.y < 0)
                 GameManager.instance.GetHit();
-
+            RaycastHit hitInfo;
             if (GetComponent<Rigidbody>().velocity.y <= 0 &&
-                Physics.Raycast(transform.position, Vector3.down, 0.05f, groundLayer))
-                SetFlyingMode(false);
+                Physics.Raycast(transform.position, Vector3.down, out hitInfo, 0.05f, groundLayer))
+            {
+                if(hitInfo.transform.tag == "Elevator")
+                    hitInfo.transform.SendMessage("SetPlayerState", true, SendMessageOptions.DontRequireReceiver);
+                else
+                    SetFlyingMode(false);
+            }
         }
         if (!isFlying && !isMoving)
         {

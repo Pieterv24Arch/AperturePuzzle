@@ -13,13 +13,13 @@ public class LaserEmitter : MonoBehaviour
     private float lastInteractionUpdate = 0;
     private Transform interactionCube = null;
     private bool interactionMessageSend = false;
-    
-    void FixedUpdate()
+
+    void Update()
     {
         RaycastHit hitInfo;
         if (Physics.Raycast(emitterCore.position, Vector3.forward, out hitInfo, 50, collisionLayerMask))
         {
-            laserObject.localPosition = Vector3.forward * (hitInfo.distance/ 2) + emitterCore.localPosition;
+            laserObject.localPosition = Vector3.forward*(hitInfo.distance/2) + emitterCore.localPosition;
             laserObject.localScale = new Vector3(0.01f, 0.01f, hitInfo.distance);
             laserUpdated = false;
 
@@ -41,26 +41,34 @@ public class LaserEmitter : MonoBehaviour
                         interactionCube = hitInfo.transform;
                     if (!interactionMessageSend)
                     {
-                        interactionCube.SendMessageUpwards("SetLaserHitState", true, SendMessageOptions.DontRequireReceiver);
+                        interactionCube.SendMessageUpwards("SetLaserHitState", true,
+                            SendMessageOptions.DontRequireReceiver);
                         interactionMessageSend = true;
                     }
                 }
                 else
                 {
-                    if (interactionCube != null)
-                    {
-                        interactionCube.SendMessageUpwards("SetLaserHitState", false, SendMessageOptions.DontRequireReceiver);
-                        interactionCube = null;
-                        interactionMessageSend = false;
-                    }
+                    ResetSignal();
                 }
             }
         }
-        else if(!laserUpdated)
+        else if (!laserUpdated)
         {
             laserUpdated = true;
-            laserObject.localPosition = Vector3.forward * 25f + emitterCore.localPosition;
+            laserObject.localPosition = Vector3.forward*25f + emitterCore.localPosition;
             laserObject.localScale = new Vector3(0.01f, 0.01f, 50);
+            ResetSignal();
+        }
+    }
+
+    void ResetSignal()
+    {
+        if (interactionCube != null)
+        {
+            interactionCube.SendMessageUpwards("SetLaserHitState", false,
+                            SendMessageOptions.DontRequireReceiver);
+            interactionCube = null;
+            interactionMessageSend = false;
         }
     }
 }
