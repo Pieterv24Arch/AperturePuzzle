@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     private Transform itemTargetParent;
 
     private bool ignoreInputFrame;
+    private float fallTimer;
 
     void Awake()
     {
@@ -72,6 +73,21 @@ public class PlayerController : MonoBehaviour
             if(GetComponent<Rigidbody>().velocity.y <= 0 && Physics.Raycast(transform.position, Vector3.down, 0.05f, groundLayer))
                 SetFlyingMode(false);
         }
+        /*if (!isFlying)
+        {
+            RaycastHit hitInfo;
+            if (Physics.Raycast(transform.Find("RotationFix/ActorMesh").position, Vector3.down, out hitInfo, 50, groundLayer))
+            {
+                //Debug.Log("Distance is: " + hitInfo.distance);
+                if(hitInfo.distance >= 1.4f)
+                {
+                    SetFlyingMode(true);
+                    GameManager.instance.GetHit(typeDeath: 1);
+                    if(hitInfo.distance >= 2.4f)
+                        GameManager.instance.GetHit(100, 1);
+                }
+            }
+        }*/
     }
 
     void DropItem(bool throwItem)
